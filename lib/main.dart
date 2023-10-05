@@ -1,64 +1,84 @@
-import 'dart:ffi';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final myController = TextEditingController();
+
+  @override
+  void dispose() {
+    myController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    double result = 0;
     TextStyle textStyle = TextStyle(
-        fontSize: 55, fontWeight: FontWeight.bold, color: Colors.white);
+        fontSize: 55,
+        fontWeight: FontWeight.bold,
+        color: const Color.fromARGB(255, 129, 115, 115));
 
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color.fromARGB(
-            255, 108, 85, 45), // Changed background color to green
+        appBar: AppBar(
+          title: const Text("currency conveter"),
+          elevation: 0,
+          backgroundColor: const Color.fromARGB(255, 129, 115, 115),
+        ),
+        backgroundColor: Color.fromARGB(255, 82, 66, 39),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '0',
+                result.toString(),
                 style: textStyle,
               ),
               TextField(
+                controller: myController,
                 keyboardType: TextInputType.numberWithOptions(
-                    decimal: true,
-                    signed: true), // Only accept numbers with decimals and sign
+                    decimal: true, signed: true),
                 style: TextStyle(
                   color: Colors.black,
                 ),
                 cursorColor: Colors.green,
                 cursorWidth: 2.0,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(12.0), // Add padding
+                  contentPadding: EdgeInsets.all(12.0),
                   border: OutlineInputBorder(
-                    // Add rounded border
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   hintText: 'Please enter the amount in INR',
                   hintStyle: TextStyle(
                     color: Colors.black,
                   ),
-                  prefixIcon: Icon(Icons.monetization_on, color: Colors.red),
+                  prefixIcon: Icon(Icons.monetization_on,
+                      color: Color.fromARGB(255, 92, 215, 112)),
                   filled: true,
                   fillColor: Colors.white,
                 ),
               ),
               TextButton(
                 onPressed: () {
-                  print('button clicked');
+                  print(myController.text);
+                  setState(() {
+                    result = double.parse(myController.text);
+                  });
+                  FocusScope.of(context).unfocus(); // Dismiss the keyboard
                 },
                 child: Text('convert'),
                 style: TextButton.styleFrom(
-                  backgroundColor: Colors.green, // Set the background color
-                  foregroundColor: Colors.white, // Set the foreground color
-                  minimumSize: Size(200, 50), // Set the size
+                  backgroundColor: Color.fromARGB(255, 76, 175, 84),
+                  foregroundColor: Colors.white,
+                  minimumSize: Size(200, 50),
                 ),
               ),
             ],
